@@ -15,10 +15,13 @@ const cors = require('cors');
 const server = express();
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
-const { pool } = require('pg');
+// UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS
+/*
+const { Pool } = require('pg');
 const dbParams = require('./lib/db');
-const db = new pool(dbParams);
+const db = new Pool(dbParams);
 db.connect();
+*/
 
 server.use(cors());
 server.use(cookieParser());
@@ -33,7 +36,7 @@ server.use('/styles', sass({
 }));
 server.use(express.static('public'));
 
-server.set('view engine', ejs);
+server.set('view engine', 'ejs');
 
 // ---- SETUP THE DIFFERENT PATHS IN THE ROUTES HERE -------- //
 // ---- SETUP THE DIFFERENT PATHS IN THE SERVICE HERE ------- //
@@ -41,13 +44,13 @@ server.set('view engine', ejs);
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
-  res.render('index') // <===== Renders the index.ejs in the views
+  res.render('index.ejs') // <===== Renders the index.ejs in the views
 });
 server.get('/sample', (req, res) => {
   res.send('Inside the sample page'); // <==== outputs the string in the page
 });
 
 // ---- START THE SERVER ------------------------------------ //
-server.listen(PORT, () => {
-  console.log(`The server is listening on port ${PORT}`)
+server.listen(port, () => {
+  console.log(`The server is listening on port ${port}`)
 });
