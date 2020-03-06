@@ -26,7 +26,7 @@ e.g- sampleRoutes.js contains all the path related to localhost:8001/sample
 - Service folder contains all the complex business logic for paths defined in routes.
 - Repository folder contains query statements to interact ONLY with the DATABASE.
 ### PAGES
-- Views folder contain all the ejs files that are used to render on the url hits a specific path.
+- Views folder contain all the ejs files that are used to render as the url hits a specific path.
 e.g- localhost:8001/ is the main landing page which renders the index.ejs
 ### LIB
 - Holds the logic of how the database acquirs its credentials from env variables.
