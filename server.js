@@ -38,15 +38,28 @@ server.use(express.static('public'));
 
 server.set('view engine', 'ejs');
 
-// ---- SETUP THE DIFFERENT PATHS IN THE ROUTES HERE -------- //
-// ---- SETUP THE DIFFERENT PATHS IN THE SERVICE HERE ------- //
-// ---- SETUP THE DIFFERENT PATHS IN THE REPOSITORY HERE ---- //
+// ---- SETUP THE DIFFERENT PATHS IN THE ROUTES HERE -------- // <-- DEFINES ALL URL ROUTES
+const sampleRoutes = require('./routes/sampleRoutes');
+
+// ---- SETUP THE DIFFERENT PATHS IN THE SERVICE HERE ------- // <-- CONTAINS ALL OTHER COMPLEX BUSINESS LOGIC
+const sampleServiceFactory = require('./service/sampleServices');
+
+// ---- SETUP THE DIFFERENT PATHS IN THE REPOSITORY HERE ---- // <-- CONTAINS ALL THE DB LOGIC
+const sampleRepositoryFactory = require('./repository/sampleRepository');
+
+// ---- SETTING UP THE REPOSITORY AND SERVICE TO BE USED BY ROUTE -- // 
+// const sampleRepository = sampleRepositoryFactory(db); // <-- UNCOMMENT WHEN db section is UNCOMMENTED
+const sampleRepository = sampleRepositoryFactory();     //  <-- DELETE THIS LINE IF THE ABOVE LINE IS UNCOMMENTED
+const sampelService = sampleServiceFactory(sampleRepository);
+
+// ---- SERVER ROUTING -------------------------------------- // <-- Routes takes service as params which in turn takes repository as params
+server.use('/sample', sampleRoutes(sampelService))
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
   res.render('index.ejs') // <===== Renders the index.ejs in the views
 });
-server.get('/sample', (req, res) => {
+server.get('/sample2', (req, res) => {
   res.send('Inside the sample page'); // <==== outputs the string in the page
 });
 
