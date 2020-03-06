@@ -1,1 +1,2 @@
-# node_template
+# USE THIS TEMPLATE TO SETUP NODE JS SERVER
+
