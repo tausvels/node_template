@@ -14,7 +14,7 @@ npm run local
 ```
 npm start
 ```
-
+## READ AND DELETE THE COMMENTS AS YOU SEEM FIT.
 ## Database setup
 - Get DB credetials and follow the env.example on setting up the environment variables.
 - After setting the .env file with db credentials, UNCOMMENT the db section in the server.js file
