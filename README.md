@@ -19,6 +19,14 @@ npm start
 - Get DB credetials and follow the env.example on setting up the environment variables.
 - After setting the .env file with db credentials, UNCOMMENT the db section in the server.js file
 
+## OAUTH WITH GOOGLE AUTHENTICATION
+- Go to https://console.developers.google.com/
+- Create a new project
+- Create credentials ==> OAuth Client ID
+- Authorized JavaScript origins --> http://localhost:8001
+- Authorized redirect URI --> http://localhost:8001/users/auth/google/callback (change redirect URI as long as it corresponds to passport config)
+- Install dependencies using ``` npm i ```
+
 ## File Organization
 ### ROUTING
 - Routes folder contains all the routes for all specific paths.
