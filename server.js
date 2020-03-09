@@ -17,20 +17,23 @@ const server = express();
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
 // UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS
+
 /*
 const { Pool } = require('pg');
 const dbParams = require('./lib/db');
 const db = new Pool(dbParams);
 db.connect();
-*/
 
-require ('./service/passport')(db);
-server.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: ['xiutbgisergnpserigun']
-  })
-);
+
+// require ('./service/passport')(db);
+// server.use(
+//   cookieSession({
+//     maxAge: 30 * 24 * 60 * 60 * 1000,
+//     keys: ['xiutbgisergnpserigun']
+//   })
+// );
+
+*/
 
 server.use(cors());
 server.use(cookieParser());
