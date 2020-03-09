@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const sass = require('node-sass-middleware');
 const morgan = require('morgan');
+const cookieSession = require('cookie-session');
 const cors = require('cors');
 
 // ---- INITIALIZING THE SERVER ----------------- //
@@ -22,6 +23,14 @@ const dbParams = require('./lib/db');
 const db = new Pool(dbParams);
 db.connect();
 */
+
+require ('./service/passport')(db);
+server.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: ['xiutbgisergnpserigun']
+  })
+);
 
 server.use(cors());
 server.use(cookieParser());
