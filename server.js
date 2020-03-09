@@ -49,20 +49,28 @@ server.set('view engine', 'ejs');
 
 // ---- SETUP THE DIFFERENT PATHS IN THE ROUTES HERE -------- // <-- DEFINES ALL URL ROUTES
 const sampleRoutes = require('./routes/sampleRoutes');
+const usersRoutes = require('./routes/usersRoutes');
 
 // ---- SETUP THE DIFFERENT PATHS IN THE SERVICE HERE ------- // <-- CONTAINS ALL OTHER COMPLEX BUSINESS LOGIC
 const sampleServiceFactory = require('./service/sampleServices');
+const usersServiceFactory = require('./service/usersServices');
 
 // ---- SETUP THE DIFFERENT PATHS IN THE REPOSITORY HERE ---- // <-- CONTAINS ALL THE DB LOGIC
 const sampleRepositoryFactory = require('./repository/sampleRepository');
+const usersRepositoryFactory = require('./repository/usersRepository');
 
 // ---- SETTING UP THE REPOSITORY AND SERVICE TO BE USED BY ROUTE -- // 
 // const sampleRepository = sampleRepositoryFactory(db); // <-- UNCOMMENT WHEN db section is UNCOMMENTED
 const sampleRepository = sampleRepositoryFactory();     //  <-- DELETE THIS LINE IF THE ABOVE LINE IS UNCOMMENTED
 const sampelService = sampleServiceFactory(sampleRepository);
 
+// const usersRepository = usersRepositoryFactory(db); // <-- UNCOMMENT WHEN db section is UNCOMMENTED
+const usersRepository = usersRepositoryFactory();
+const userService = usersServiceFactory(usersRepository);
+
 // ---- SERVER ROUTING -------------------------------------- // <-- Routes takes service as params which in turn takes repository as params
-server.use('/sample', sampleRoutes(sampelService))
+server.use('/sample', sampleRoutes(sampelService));
+server.use('/users', usersRoutes(userService));
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
