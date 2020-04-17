@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 module.exports = userService => {
-  router.get("/", (req, res) => {
+  router.get("/getuser", (req, res) => {
     userService
       .getAllUser()
       .then(data => {
@@ -14,22 +14,28 @@ module.exports = userService => {
         res.status(500).json({ error: err.message });
       });
   });
-
+  router.get("/login", (req, res) => {
+    res.render("login.ejs")
+  })
+  // auth with google
   router.get(
     "/auth/google",
     passport.authenticate("google", {
-      scope: ["profile", "email"]
+      scope: ["profile", "email"] // <-- information you want to get from google
     })
   );
 
   router.get(
-    "/auth/google/callback",
+    "/auth/google/redirect",
     passport.authenticate("google"),
     (req, res) => {
+      const userObj = req.user;
+      // res.send(userObj);
       res.redirect("/");
     }
   );
 
+  // auth logout
   router.get("/auth/logout", (req, res) => {
     req.logOut();
     res.redirect("/");
