@@ -11,30 +11,40 @@ const sass = require('node-sass-middleware');
 const morgan = require('morgan');
 const cookieSession = require('cookie-session');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 // ---- INITIALIZING THE SERVER ----------------- //
 const server = express();
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
 // UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS
-
 /*
 const { Pool } = require('pg');
 const dbParams = require('./lib/db');
 const db = new Pool(dbParams);
 db.connect();
+*/
 
+// ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
+// UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS //
+mongoose.connect(process.env.mongoDbURI, () => {console.log('Connected to MongoDB')});
 
+// ---- USING THE PASSPORT TO SET THE USER FOR THE SERVER AND SETTING THE COOKIE ------------- //
+/*
 // require ('./service/passport')(db);
 // server.use(
 //   cookieSession({
 //     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     keys: ['xiutbgisergnpserigun']
+//     keys: [process.env.sessionCookieEncryptionKey]  // <-- Encryption key for secure cookie
 //   })
 // );
 
-*/
+// ---- INITIALIZE PASSPORT AND USE IT FOR SESSION ----------- //
+server.use(passport.initialize())
+server.use(passport.session());
 
+*/
+// ------------------------------------------------------------------------------------------- //
 server.use(cors());
 server.use(cookieParser());
 server.use(morgan('dev'));
@@ -77,7 +87,12 @@ server.use('/users', usersRoutes(userService));
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
-  res.render('index.ejs') // <===== Renders the index.ejs in the views
+  // if user exists
+  if (req.user) { 
+    res.render('index.ejs', {userObj: req.user}); // <===== Renders the index.ejs in the views
+  } else {
+    res.redirect('/users/login');
+  };
 });
 server.get('/sample2', (req, res) => {
   res.send('Inside the sample page'); // <==== outputs the string in the page
