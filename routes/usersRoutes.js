@@ -14,9 +14,21 @@ module.exports = userService => {
         res.status(500).json({ error: err.message });
       });
   });
+
   router.get("/login", (req, res) => {
-    res.render("login.ejs")
-  })
+    userService.getAllUser()
+    .then(data => {
+      if (data.rows) {
+        console.log(data.rows)
+        res.render("login.ejs", {dbStatus: true})
+      }
+    })
+    .catch(e => {
+      console.log('DB NOT CONNECTED')
+      res.render("login.ejs", {dbStatus: false})
+    })
+  });
+
   // auth with google
   router.get(
     "/auth/google",

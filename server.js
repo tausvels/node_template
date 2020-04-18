@@ -19,20 +19,20 @@ const server = express();
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
 // UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS
-/*
+
 const { Pool } = require('pg');
 const dbParams = require('./lib/db');
 const db = new Pool(dbParams);
 db.connect();
-*/
+
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
 // UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS // 
 // ALSO UPDATE THE PASSPORT.JS ACCORDINGLY  ----- //
-// mongoose.connect(process.env.mongoDbURI, () => {console.log('Connected to MongoDB')});
+const db2 = mongoose.connect(process.env.mongoDbURI, () => {console.log('Connected to MongoDB')});
 
 // ---- USING THE PASSPORT TO SET THE USER FOR THE SERVER AND SETTING THE COOKIE ------------- //
-/*
+
 require ('./service/passport')(db);
 server.use(
   cookieSession({
@@ -44,7 +44,7 @@ server.use(
 // ---- INITIALIZE PASSPORT AND USE IT FOR SESSION ----------- //
 server.use(passport.initialize())
 server.use(passport.session());
-*/
+
 
 // ------------------------------------------------------------------------------------------- //
 server.use(cors());
@@ -79,8 +79,8 @@ const usersRepositoryFactory = require('./repository/usersRepository');
 const sampleRepository = sampleRepositoryFactory();     //  <-- DELETE THIS LINE IF THE ABOVE LINE IS UNCOMMENTED
 const sampelService = sampleServiceFactory(sampleRepository);
 
-// const usersRepository = usersRepositoryFactory(db); // <-- UNCOMMENT WHEN db section is UNCOMMENTED
-const usersRepository = usersRepositoryFactory();
+const usersRepository = usersRepositoryFactory(db); // <-- UNCOMMENT WHEN db section is UNCOMMENTED
+// const usersRepository = usersRepositoryFactory();
 const userService = usersServiceFactory(usersRepository);
 
 // ---- SERVER ROUTING -------------------------------------- // <-- Routes takes service as params which in turn takes repository as params
