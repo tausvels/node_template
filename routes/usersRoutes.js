@@ -3,7 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 
 module.exports = userService => {
-  router.get("/getuser", (req, res) => {
+  router.get("/getusers", (req, res) => { // <-- use this url to get all the users from the postgres db
     userService
       .getAllUser()
       .then(data => {
