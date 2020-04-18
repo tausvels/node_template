@@ -29,7 +29,7 @@ module.exports = userService => {
     "/auth/google/redirect",
     passport.authenticate("google"),
     (req, res) => {
-      const userObj = req.user;
+      const userObj = req.user[0];
       // res.send(userObj);
       res.redirect("/");
     }

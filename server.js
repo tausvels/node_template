@@ -81,8 +81,8 @@ server.get('/', (req,res)=>{
     if(!req.user){
       res.redirect('/users/login')
     } else {
-      console.log(req.user[0])
-      res.render('index.ejs', {userObj: req.user[0]})
+      console.log(req.user)
+      res.render('index.ejs', {userObj: req.user})
     }
 });
 server.get('/sample', (req, res) => {

@@ -1,7 +1,7 @@
 const addNewUser = (db, user) => {
-  let qsParam = [user.name, user.email, user.google_id, user.photoURL];
+  let qsParam = [user.username, user.email, user.google_id, user.thumbnail];
   let qs = `
-    INSERT INTO users (name, email, google_id, photoURL) 
+    INSERT INTO users (username, email, google_id, thumbnail) 
     VALUES ($1, $2, $3, $4)
     RETURNING *;
   `

@@ -6,7 +6,7 @@ const userSchema = new Schema({
   username: String,
   email: String,
   google_id: String,
-  photoURL: String
+  thumbnail: String
 });
 
 // creating the model/collection

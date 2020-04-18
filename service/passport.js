@@ -1,8 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const User = require('../models/user-model') // <-- Mongo User Model
-
-const userSFn = require("../dbHelpers/usersFn");  // <-- writing to pg
+const User = require('../models/user-model') // <-- Mongo User Model (USING MONGODB)
+const userSFn = require("../dbHelpers/usersFn");  // <-- writing to pg (USING POSTGRESQL)
 
 
 module.exports = db => {
@@ -13,13 +12,13 @@ module.exports = db => {
 
   // ---- DESERIALIZE THE COOKIE and USE THE ID TO FIND THAT PARTICULAR USER ------ //
   passport.deserializeUser((id, done) => {
-    /** POSTGRESQL */
+    /** UNCOMMENT IF USING POSTGRESQL */
     // userSFn.getUserByGoogleId(db, id).then(user => {
     //   done(null, user);
     // });
 
     /** UNCOMMENT IF USING MONGODB */
-    User.find({google_id: id}).then(user => {done(null, user)}).catch(e=>console.error(e))
+    User.find({google_id: id}).then(user => {done(null, user[0])}).catch(e=>console.error(e))
   });
 
   // ---- OAUTH SECTION ----------------------------------------------------------- //
@@ -31,27 +30,34 @@ module.exports = db => {
         callbackURL: "/users/auth/google/redirect"
       },
       async (accessToken, refreshToken, profile, done) => { // <-- Passport Callback func
-        // try {
-        //   console.log('Running');
-        //   const existingUser = await userSFn.getUserByGoogleId(db, profile.id);
-        //   if (existingUser) {
-        //     return done(null, existingUser);
-        //   }
-        //   console.log('Passed 1st if')
-        //   const user = await userSFn.addNewUser(db, {
-        //     name: profile.displayName,
-        //     email: profile.emails[0].value,
-        //     google_id: profile.id,
-        //     photoURL: profile.photos[0].value 
-        //   });
-        //   done(null, user);
-          
-        // } catch (error) {
-        //   console.error(error)
-        //   done(null)
-        // }
-
-        /** UNCOMMENT IF USING MONGODB */
+      /** UNCOMMENT IF POSTRESQL  */
+      // --------------------------------------------------------------------------- //
+      /*
+        try {
+          console.log('Running');
+          const existingUser = await userSFn.getUserByGoogleId(db, profile.id);
+          if (existingUser) {
+            return done(null, existingUser);
+          } else {
+            console.log('Passed 1st if')
+            userSFn.addNewUser(db, {
+              username: profile.displayName,
+              email: profile.emails[0].value,
+              google_id: profile.id,
+              thumbnail: profile.photos[0].value 
+            }).then(newUser => {
+              console.log(newUser);
+              done(null, newUser);
+            })
+          } 
+        } catch (error) {
+          console.error(error)
+          done(null)
+        }
+      */
+      // ------------------------------------------------------------------------- //
+      //** UNCOMMENT IF USING MONGODB */------------------------------------------ //
+        
         try {
           // check existing user
           await User.findOne({google_id: profile.id})
@@ -64,7 +70,7 @@ module.exports = db => {
                 username: profile.displayName,
                 email:  profile.emails[0].value,
                 google_id: profile.id,
-                photoURL: profile.photos[0].value
+                thumbnail: profile.photos[0].value
               }).save().then(newUser => {
                 console.log('NEW USER --> ',newUser)
                 done(null, newUser);
@@ -76,6 +82,8 @@ module.exports = db => {
           done(null);
         }
         
+      // --------------------------------------------------------------------------- //
+
       }
     )
   );
