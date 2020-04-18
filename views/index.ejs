@@ -9,9 +9,61 @@
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
     <script type="text/javascript" src="/scripts/app.js"></script>
+    <style>
+      body{
+          font-family: arial;
+          margin: 0;
+      }
+      nav{
+          background: #ff5353;
+          padding: 20px 10px;
+      }
+      nav ul{
+          max-width: 960px;
+          margin: 0 auto;
+          padding: 0;
+      }
+      nav li{
+          list-style-type: none;
+          display: inline-block;
+          margin: 0 10px 0 0;
+      }
+      nav a{
+          color: #fff;
+          font-size: 18px;
+          background: rgba(255,255,255,0.2);
+          text-decoration: none;
+          padding: 10px;
+          display: block;
+      }
+      main, header{
+          max-width: 960px;
+          margin: 30px auto;
+          padding: 0 10px;
+          color: #333;
+      }
+
+  </style>
   </head>
 
   <body>
-    <h1>WELCOME TO NODE SERVER TEMPLATE</h1>
-  </body>
+    <nav>
+        <ul>
+            <li><a href="/">Homepage</a></li>
+            <% if (userObj) { %>
+                <li><a href="/users/auth/logout">Logout</a></li>
+            <% } else { %>
+                <li><a href="/users/login">Login</a></li>
+            <% } %>
+        </ul>
+    </nav>
+    <header>
+        <h1>WELCOME TO <%=userObj.username %>'s NODE TEMPLATE</h1>
+        <h2>Homepage</h2>
+    </header>
+    <main>
+        <img src = "<%= userObj.thumbnail %>" />
+        <p>Modify this file in Views/index.ejs however you like :)</p>
+    </main>
+</body>
 </html>
