@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const cookieSession = require('cookie-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 // ---- INITIALIZING THE SERVER ----------------- //
 const server = express();
@@ -26,24 +27,25 @@ db.connect();
 */
 
 // ---- INITIALIZING THE DATABASE(POSTGRESQL) --- //
-// UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS //
-mongoose.connect(process.env.mongoDbURI, () => {console.log('Connected to MongoDB')});
+// UNCOMMENT AFTER FILLING THE .env FILE WITH DATABASE CREDENTIALS // 
+// ALSO UPDATE THE PASSPORT.JS ACCORDINGLY  ----- //
+// mongoose.connect(process.env.mongoDbURI, () => {console.log('Connected to MongoDB')});
 
 // ---- USING THE PASSPORT TO SET THE USER FOR THE SERVER AND SETTING THE COOKIE ------------- //
 /*
-// require ('./service/passport')(db);
-// server.use(
-//   cookieSession({
-//     maxAge: 30 * 24 * 60 * 60 * 1000,
-//     keys: [process.env.sessionCookieEncryptionKey]  // <-- Encryption key for secure cookie
-//   })
-// );
+require ('./service/passport')(db);
+server.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [process.env.sessionCookieEncryptionKey]  // <-- Encryption key for secure cookie
+  })
+);
 
 // ---- INITIALIZE PASSPORT AND USE IT FOR SESSION ----------- //
 server.use(passport.initialize())
 server.use(passport.session());
-
 */
+
 // ------------------------------------------------------------------------------------------- //
 server.use(cors());
 server.use(cookieParser());

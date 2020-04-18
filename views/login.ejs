@@ -50,10 +50,24 @@
             <ul>
               <li><a href="/">Homepage</a></li>
               <li><a href="/users/auth/google">Login</a></li>
+              <li><a href="/users/getusers">All Users</a></li>
             </ul>
         </nav>
         <header>
             <h1>Login using...</h1>
+            <ul>
+              <li>
+                <h2>Connect Your Database and create a 'users' table to have access to All Users.</h2>
+                <p>All Users Button uses POSTGRESQL's <strong>SELECT * FROM users;</strong> query.</p>
+                <hr>
+              </li>
+              <li>
+                <h2>Once you have created your 'users' table in either PostgreSQL or MongoDB</h2>
+                <h2>LOGIN using your GOOGLE Account.</h2>
+                <p>Click ALL USERS to see all the users in your database you have logged into your server using their GOOGLE Account.</p>
+                <hr>
+              </li>
+            </ul>
         </header>
         <main>
             <a class="google-btn" href="/users/auth/google">Google+</a>
