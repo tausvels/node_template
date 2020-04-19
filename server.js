@@ -62,6 +62,7 @@ server.set('view engine', 'ejs');
 
 // ---- SETUP THE DIFFERENT PATHS IN THE ROUTES HERE -------- // <-- DEFINES ALL URL ROUTES
 const usersRoutes = require('./routes/usersRoutes');
+const apiTest = require('./routes/apiTest'); 
 
 // ---- SETUP THE DIFFERENT PATHS IN THE SERVICE HERE ------- // <-- CONTAINS ALL OTHER COMPLEX BUSINESS LOGIC
 const usersServiceFactory = require('./service/usersServices');
@@ -76,6 +77,7 @@ const userService = usersServiceFactory(usersRepository);
 
 // ---- SERVER ROUTING -------------------------------------- // 
 server.use('/users', usersRoutes(userService));
+server.use('/api', apiTest());
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
