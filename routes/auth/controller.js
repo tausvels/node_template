@@ -32,8 +32,19 @@ module.exports = service => {
     }
   };
 
-  router.post('/activate', (req, res) => {
+  router.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure'}), (req, res) => {
+    // res.send(req.user);
+    if (req.user) {
+      res.render('index.ejs', {userObj: req.user})
+    } else {
+      res.send('invalid user')
+    }
+  });
+
+  router.post('/activate', async (req, res) => {
     const user = {...req.body};
+    const result = await service.findUser('email', user.email);
+    if (result.rows[0]) return res.status(400).json({msg: 'THE EMAIL ADDRESS IS ALREADY IN USE'})
     const token = jwt.sign({...user}, process.env.JWT_ACC_ACTIVATE, {expiresIn: '30m'});
     const mailOptions = {
       from: `noreply@domainofTausif.com`,
@@ -55,6 +66,7 @@ module.exports = service => {
     });
   });
 
+// ------------------- ALL GET ROUTES ------------------------------------------------------------- //
   router.get('/register/:token', async (req, res) => {
     const token = req.params.token;
     if (token) {
@@ -70,9 +82,6 @@ module.exports = service => {
             const hashedPw = await bcrypt.hash(user.password, 10);
             user.password = hashedPw;
             const result = await service.createUserWithEmailPW(user);
-            if (result === 'userExists') {
-              res.status(400).send('Email already exists');
-            }
             // res.send(result);
             res.render("index.ejs", {userObj: result})
           } catch (err) {
@@ -85,16 +94,6 @@ module.exports = service => {
     }
   });
 
-  router.post('/login', passport.authenticate('local', {failureRedirect: '/login-failure'}), (req, res) => {
-    console.log("req.user from /login: ", req.user);
-    console.log("submiited value: ", req.body);
-    // res.send(req.user);
-    if (req.user) {
-      res.render('index.ejs', {userObj: req.user})
-    } else {
-      res.send('invalid user')
-    }
-  });
 
   router.get('/', async (req, res) => {
     console.log('in the auth controller');
@@ -107,7 +106,7 @@ module.exports = service => {
   });
 
   router.get('/logout', (req, res) => {
-    console.log('user --> ', req.user);
+    // console.log('user --> ', req.user);
     req.logOut();
     res.redirect('http://localhost:8001');
   })

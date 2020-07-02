@@ -10,16 +10,10 @@ module.exports = repository => {
     },
 
     createUserWithEmailPW: async (user) => {
-      const result = await repository.findUser("email", user.email);
-      let existingUser = result.rows[0];
-
-      if (!existingUser) {
         const result = await repository.createUserWithEmailPW(user);
         const newUser = result.rows[0];
         // console.log('NEW USER ==> ', newUser);
         return newUser;
-      }
-      return 'userExists';
     },
 
     authWith_g_id: async (profile) => {

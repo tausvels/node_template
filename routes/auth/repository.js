@@ -6,10 +6,9 @@ module.exports = db => {
     },
 
     findUser: (field, value) => {
-      // const qs = "SELECT * FROM users WHERE " + field + " = $1 ;";
-      const qs = `SELECT * FROM users WHERE ${field}='${value}';`
-      console.log(qs)
-      return db.query(qs);
+      const qs = "SELECT * FROM users WHERE " + field + " = $1 ;";
+      // const qs = `SELECT * FROM users WHERE ${field}='${value}';`
+      return db.query(qs,[value]);
     },
 
     findUserWith_g_id: (g_id) => {
