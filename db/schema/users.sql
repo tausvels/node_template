@@ -6,5 +6,6 @@ CREATE TABLE users (
   password TEXT,
   google_id TEXT,
   photo TEXT,
-  facebook_id TEXT
+  facebook_id TEXT,
+  confirmed Boolean
 );

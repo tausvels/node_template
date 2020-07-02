@@ -53,7 +53,22 @@
             </ul>
         </nav>
         <header>
+            <h1>REGISTER AN ACCOUNT</h1>
+            <form method="POST" action="/auth/activate">
+                <label>Enter email: </label>
+                <input name='email' type='text' placeholder="Email" />
+                <label>Enter Password</label>
+                <input name='password' type="password" placeholder="Enter password"/>
+                <input type="submit"/>
+            </form>
             <h1>Login using...</h1>
+            <form method="POST" action="/auth/login">
+                <label>Enter email: </label>
+                <input name='email' type='text' placeholder="Email" />
+                <label>Enter Password</label>
+                <input name='password' type="password" placeholder="Enter password"/>
+                <input type="submit"/>
+            </form>
             <ul>
               <li>
                 <h2>CREATE A .env FILE IN THE ROOT DIRECTORY FOLLOWING .env.example FILE.</h2>
@@ -88,6 +103,8 @@
         <main>
             <p>Without connecting any database and modifying the server.js file and passport.js file in <strong>service folder</strong>, it will keep spinning.</p>
             <a class="google-btn" href="/auth/google">Google+</a>
+            <br></br>
+            <hr>
         </main>
     </body>
 </html>

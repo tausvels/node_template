@@ -6,8 +6,10 @@ module.exports = db => {
     },
 
     findUser: (field, value) => {
-      const qs = `SELECT * FROM users WHERE ${field} = $1 ;`;
-      return db.query(qs, [value]);
+      // const qs = "SELECT * FROM users WHERE " + field + " = $1 ;";
+      const qs = `SELECT * FROM users WHERE ${field}='${value}';`
+      console.log(qs)
+      return db.query(qs);
     },
 
     findUserWith_g_id: (g_id) => {
@@ -19,8 +21,9 @@ module.exports = db => {
       const email = user.email;
       const password = user.password;
       const userName = user.userName || user.firstName || 'Anonymous';
-      const qs = `INSERT INTO users(email, password, username) VALUES ($1, $2, $3) RETURNING *;`;
-      return db.query(qs, [email, password, userName]);
+      const confirmed = true;
+      const qs = `INSERT INTO users(email, password, username, confirmed) VALUES ($1, $2, $3, $4) RETURNING *;`;
+      return db.query(qs, [email, password, userName, confirmed]);
     },
 
     createUserWith_g_profile: (profile) => {

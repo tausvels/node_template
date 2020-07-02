@@ -61,9 +61,11 @@ server.set('view engine', 'ejs');
 // * ROUTES * //
 const AuthModule = require('./routes/auth');
 const UserModule = require('./routes/users');
+const SendMail = require('./routes/sendmail/controller');
 
 server.use('/users', UserModule(db));
 server.use('/auth', AuthModule(db));
+server.use('/send', SendMail());
 
 // ---- HOME PAGE ------------------------------------------- //
 server.get('/', (req, res) => {
@@ -76,6 +78,9 @@ server.get('/', (req, res) => {
     res.render('index.ejs', {userObj: req.user})
   };
 });
+server.get('/login-failure', (req, res) => {
+  res.send('You entered wrong credentials.')
+})
 
 // ---- START THE SERVER ------------------------------------ //
 server.listen(port, () => {

@@ -5,6 +5,7 @@ module.exports = repository => {
     },
 
     findUser: (field, value) => {
+      // console.log('finding user --> ', field, value)
       return repository.findUser(field, value);
     },
 
@@ -15,7 +16,7 @@ module.exports = repository => {
       if (!existingUser) {
         const result = await repository.createUserWithEmailPW(user);
         const newUser = result.rows[0];
-        console.log('NEW USER ==> ', newUser);
+        // console.log('NEW USER ==> ', newUser);
         return newUser;
       }
       return 'userExists';

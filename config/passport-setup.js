@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 module.exports = service => {
   // ---- SERIALIZE THE USER USING ITS GOOGLE_ID TO BE PUT INTO COOKIE ------------ //
-  passport.serializeUser((user, done) => {
+  passport.serializeUser((user, done) => {console.log('serialize running --> ', user)
     done(null, user.id);
   });
 
@@ -84,9 +84,13 @@ module.exports = service => {
   const authenticateUser = async (email, password, done) => {
     console.log('authenticate user ran');
     const result = await service.findUser('email', email);
-    const user = result[0];
+    
+    const user = result.rows[0];console.log('user==> ' , user)
     if (!user) {
       return done(null, false, { message: 'User does not exist with that email address'});
+    }
+    if (!user.confirmed) {
+      return done(null, false, {message: 'You need to verify your email'})
     }
     try {
       if (await bcrypt.compare(password, user.password)) {
