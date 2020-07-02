@@ -19,7 +19,6 @@ module.exports = userService => {
     userService.getAllUser()
     .then(data => {
       if (data.rows) {
-        console.log(data.rows)
         res.render("login.ejs", {dbStatus: true})
       }
     })

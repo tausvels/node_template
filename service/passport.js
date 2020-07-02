@@ -13,12 +13,12 @@ module.exports = db => {
   // ---- DESERIALIZE THE COOKIE and USE THE ID TO FIND THAT PARTICULAR USER ------ //
   passport.deserializeUser((id, done) => {
     /** UNCOMMENT IF USING POSTGRESQL */
-    // userSFn.getUserByGoogleId(db, id).then(user => {
-    //   done(null, user);
-    // });
+    userSFn.getUserByGoogleId(db, id).then(user => {
+      done(null, user);
+    });
 
     /** UNCOMMENT IF USING MONGODB */
-    User.find({google_id: id}).then(user => {done(null, user[0])}).catch(e=>console.error(e))
+    // User.find({google_id: id}).then(user => {done(null, user[0])}).catch(e=>console.error(e))
   });
 
   // ---- OAUTH SECTION ----------------------------------------------------------- //
@@ -32,14 +32,12 @@ module.exports = db => {
       async (accessToken, refreshToken, profile, done) => { // <-- Passport Callback func
       /** UNCOMMENT IF POSTRESQL  */
       // --------------------------------------------------------------------------- //
-      /*
+      
         try {
-          console.log('Running');
           const existingUser = await userSFn.getUserByGoogleId(db, profile.id);
           if (existingUser) {
             return done(null, existingUser);
           } else {
-            console.log('Passed 1st if')
             userSFn.addNewUser(db, {
               username: profile.displayName,
               email: profile.emails[0].value,
@@ -54,10 +52,10 @@ module.exports = db => {
           console.error(error)
           done(null)
         }
-      */
+      
       // ------------------------------------------------------------------------- //
       //** UNCOMMENT IF USING MONGODB */------------------------------------------ //
-        
+        /*
         try {
           // check existing user
           await User.findOne({google_id: profile.id})
@@ -81,7 +79,7 @@ module.exports = db => {
           console.error(error)
           done(null);
         }
-        
+        */
       // --------------------------------------------------------------------------- //
 
       }
